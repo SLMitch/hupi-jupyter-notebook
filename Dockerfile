@@ -1,4 +1,4 @@
-FROM jupyter/all-spark-notebook
+FROM jupyter/all-spark-notebook:27ba57364579
 
 USER root
 
@@ -60,6 +60,6 @@ RUN conda install --quiet -c bioconda --yes 'r-mixomics'  && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 
-RUN conda create -n python2 python=2.7 anaconda && \
+RUN conda create -n python2 python=2.7 ipykernel && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
