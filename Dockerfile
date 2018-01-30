@@ -43,7 +43,7 @@ RUN conda install --quiet --yes \
 USER root
 
 RUN mkdir -p /opt
-RUN curl -L http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz |  tar -xz -C /opt/
+RUN curl -L http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz   |  tar -xz -C /opt/
 RUN mv /opt/hadoop-2.7* /opt/hadoop
 
 
