@@ -32,9 +32,10 @@ RUN conda install --quiet --yes \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-RUN conda install --quiet --yes -c cyclus   java-jdk        && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
-RUN conda install --quiet --yes -c terradue r-rhdfs r-rgdal && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
-RUN conda install --quiet --yes -c bioconda 'r-mixomics'    && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
-RUN conda create -n python2 python=2.7 ipykernel            && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes -c cyclus   java-jdk            && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes -c terradue r-rhdfs r-rgdal     && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes -c bioconda 'r-mixomics'        && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda create -n python2 python=2.7 ipykernel                && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes-c christophaburke r-rpostgresql && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
 
 
