@@ -1,16 +1,12 @@
-FROM jupyter/all-spark-notebook:27ba57364579
+FROM jupyter/all-spark-notebook:92fe05d1e7e5
 
 USER root
 
-# R pre-requisites
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    fonts-dejavu \
-    gfortran \
-    gcc && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /opt
+RUN curl -L http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz   |  tar -xz -C /opt/
+RUN mv /opt/hadoop-2.7* /opt/hadoop
 
-USER $NB_USER
+USER $NB_UID
 
 # R packages
 RUN conda install --quiet --yes \
@@ -28,38 +24,17 @@ RUN conda install --quiet --yes \
     'r-caret=6.0*' \
     'r-rcurl=1.95*' \
     'r-crayon=1.3*' \
-    'r-randomforest=4.6*' && \
+    'r-randomforest=4.6*' \
+    'r-doParallel' \
+    'r-rjava' \
+    'nb_conda' && \
     conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
-RUN conda install -c cyclus java-jdk  --quiet --yes && conda clean -tipsy && fix-permissions $CONDA_DIR
-RUN conda install -c terradue r-rhdfs r-rgdal --quiet --yes && conda clean -tipsy && fix-permissions $CONDA_DIR
-
-RUN conda install --quiet --yes \
-    'r-rjava' && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
-
-USER root
-
-RUN mkdir -p /opt
-RUN curl -L http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.5/hadoop-2.7.5.tar.gz   |  tar -xz -C /opt/
-RUN mv /opt/hadoop-2.7* /opt/hadoop
+RUN conda install --quiet --yes -c cyclus   java-jdk        && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes -c terradue r-rhdfs r-rgdal && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda install --quiet --yes -c bioconda 'r-mixomics'    && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
+RUN conda create -n python2 python=2.7 ipykernel            && conda clean -tipsy && fix-permissions $CONDA_DIR && fix-permissions /home/$NB_USER
 
 
-USER $NB_USER
-
-
-RUN conda install nb_conda --quiet --yes && conda clean -tipsy && fix-permissions $CONDA_DIR
-
-RUN conda install --quiet --yes 'r-doParallel'  && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
-
-RUN conda install --quiet -c bioconda --yes 'r-mixomics'  && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
-
-RUN conda create -n python2 python=2.7 ipykernel && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
