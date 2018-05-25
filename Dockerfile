@@ -3,8 +3,7 @@ FROM jupyter/all-spark-notebook:c7d997f2db86
 USER root
 
 RUN mkdir -p /opt
-RUN curl -L http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.6/hadoop-2.7.6.tar.gz   |  tar -xz -C /opt/
-RUN mv /opt/hadoop-2.7* /opt/hadoop
+RUN curl -L http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.6/hadoop-2.7.6.tar.gz   |  tar -xz -C /opt/ && mv /opt/hadoop-2.7* /opt/hadoop
 
 USER $NB_UID
 
